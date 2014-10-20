@@ -166,6 +166,10 @@ class Allocator {
     assert(valid());
   }
 
+  int max_size() {
+    return (sizeof(a) - 4) / sizeof(T);
+  }
+
   /**
    * O(1) in space
    * O(1) in time
