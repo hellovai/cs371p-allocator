@@ -73,7 +73,7 @@ class Allocator {
    * <your documentation>
    */
   bool valid() const {
-    int b = 0, e;
+    uint b = 0, e;
     while (b < N) {
       int v = view(b);
 
@@ -93,6 +93,8 @@ class Allocator {
    * <your documentation>
    */
   int& view(int i) { return *reinterpret_cast<int*>(&a[i]); }
+
+  inline int min_block() { return (sizeof(T) + sizeof(int) * 2); }
 
  public:
   // ------------
@@ -129,8 +131,29 @@ class Allocator {
    * return 0, if allocation fails
    */
   pointer allocate(size_type n) {
-    // <your code>
+    int size = n * sizeof(T) + sizeof(int) * 2;
+
     assert(valid());
+
+    uint b = 0, e;
+    while (b < N) {
+      int v = view(b);
+      e = b + sizeof(int) + v;
+      if (v >= size) {
+        if (v - size < min_block()) {
+          size = v;
+        }
+        view(b) = -(size - sizeof(int) * 2);
+        view(b + size - sizeof(int)) = -(size - sizeof(int) * 2);
+        if ((b + size - sizeof(int)) != e) {
+          int diff = v - size;
+          view(b + size) = diff;
+          view(e) = diff;
+        }
+        return reinterpret_cast<pointer>(&a[b + sizeof(int)]);
+      }
+      b = e + sizeof(int);
+    }
     return 0;
   }  // replace!
 
@@ -161,6 +184,7 @@ class Allocator {
   void deallocate(pointer p, size_type) {
     // <your code>
     assert(valid());
+
   }
 
   // -------
