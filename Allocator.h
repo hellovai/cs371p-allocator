@@ -15,6 +15,7 @@
 #include <cstddef>    // ptrdiff_t, size_t
 #include <new>        // bad_alloc, new
 #include <stdexcept>  // invalid_argument
+#include <iostream>
 
 // ---------
 // Allocator
@@ -72,7 +73,17 @@ class Allocator {
    * <your documentation>
    */
   bool valid() const {
-    // <your code>
+    int b = 0, e;
+    while (b < N) {
+      int v = view(b);
+
+      e = b + sizeof(int) + v;
+      if (e >= N) return false;
+
+      if (v != view(e)) return false;
+
+      b = e + sizeof(int);
+    }
     return true;
   }
 
@@ -95,7 +106,8 @@ class Allocator {
    * sizeof(int))
    */
   Allocator() {
-    // <your code>
+    view(0) = N - sizeof(int) * 2;
+    view(N - sizeof(int)) = view(0);
     assert(valid());
   }
 
