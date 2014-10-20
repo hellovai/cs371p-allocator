@@ -167,7 +167,7 @@ class Allocator {
   }
 
   int max_size() {
-    return (sizeof(a) - 4) / sizeof(T);
+    return (sizeof(a) - sizeof(int) * 2) / sizeof(T);
   }
 
   /**
