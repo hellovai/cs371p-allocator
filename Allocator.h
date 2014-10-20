@@ -131,9 +131,9 @@ class Allocator {
    * return 0, if allocation fails
    */
   pointer allocate(size_type n) {
-    int size = n * sizeof(T) + sizeof(int) * 2;
-
     assert(valid());
+
+    int size = n * sizeof(T) + sizeof(int) * 2;
 
     uint b = 0, e;
     while (b < N) {
@@ -181,10 +181,38 @@ class Allocator {
    * after deallocation adjacent free blocks must be coalesced
    * <your documentation>
    */
-  void deallocate(pointer p, size_type) {
-    // <your code>
+  void deallocate(pointer p, size_type t) {
     assert(valid());
+    uint b1 = (uint)(reinterpret_cast<char*>(p) - a) - sizeof(int);
+    uint b = 0, e;
+    int size = t * sizeof(T);
+    while (b < N) {
+      int v = view(b);
+      if (b == b1) {
+        assert(v == -size);
+        break;
+      }
+      e = b + sizeof(int) + (v < 0 ? -v : v);
+      b = e + sizeof(int);
+    }
+    if (b >= N) throw;
 
+    if (b >= sizeof(int)) {
+      int v = view(b - sizeof(int));
+      if (v > 0) {
+        b = b - sizeof(int) * 2 - v;
+        size += sizeof(int) * 2 + view(b);
+      }
+    }
+    if (e < N - sizeof(int)) {
+      int v = view(e + sizeof(int));
+      if (v > 0) {
+        e = e + sizeof(int) * 2 + v;
+        size += sizeof(int) * 2 + view(e);
+      }
+    }
+    view(b) = size;
+    view(e) = size;
   }
 
   // -------
@@ -202,9 +230,7 @@ class Allocator {
     assert(valid());
   }
 
-  int max_size() {
-    return (sizeof(a) - sizeof(int) * 2) / sizeof(T);
-  }
+  int max_size() { return (sizeof(a) - sizeof(int) * 2) / sizeof(T); }
 
   /**
    * O(1) in space
