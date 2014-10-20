@@ -77,7 +77,7 @@ class Allocator {
     while (b < N) {
       int v = view(b);
 
-      e = b + sizeof(int) + v;
+      e = b + sizeof(int) + (v < 0 ? -v : v);
       if (e >= N) return false;
 
       if (v != view(e)) return false;
