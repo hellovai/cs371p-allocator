@@ -8,3 +8,5 @@
 *.gcda
 *.gcno
 *.gcov
+
+sftp-config.json
