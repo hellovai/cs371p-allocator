@@ -132,22 +132,23 @@ class Allocator {
    */
   pointer allocate(size_type n) {
     assert(valid());
-
     int size = n * sizeof(T) + sizeof(int) * 2;
-
     uint b = 0, e;
     while (b < N) {
       int v = view(b);
-      e = b + sizeof(int) + v;
+      e = b + sizeof(int) + (v < 0 ? -v : v);
       if (v >= size) {
         if (v - size < min_block()) {
           size = v;
+        } else {
+          size -= sizeof(int) * 2;
         }
-        view(b) = -(size - sizeof(int) * 2);
-        view(b + size - sizeof(int)) = -(size - sizeof(int) * 2);
-        if ((b + size - sizeof(int)) != e) {
-          int diff = v - size;
-          view(b + size) = diff;
+        view(b) = -(size);
+        view(b + size + sizeof(int)) = view(b);
+
+        if ((b + size + sizeof(int)) != e) {
+          int diff = v - size - 2*sizeof(int);
+          view(b + size + sizeof(int) * 2) = diff;
           view(e) = diff;
         }
         return reinterpret_cast<pointer>(&a[b + sizeof(int)]);
