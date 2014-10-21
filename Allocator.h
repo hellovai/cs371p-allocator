@@ -132,7 +132,7 @@ class Allocator {
    */
   pointer allocate(size_type n) {
     assert(valid());
-    int size = n * sizeof(T) + sizeof(int) * 2;
+    int size = n * sizeof(T);
     uint b = 0, e;
     while (b < N) {
       int v = view(b);
@@ -140,14 +140,12 @@ class Allocator {
       if (v >= size) {
         if (v - size < min_block()) {
           size = v;
-        } else {
-          size -= sizeof(int) * 2;
         }
         view(b) = -(size);
         view(b + size + sizeof(int)) = view(b);
 
         if ((b + size + sizeof(int)) != e) {
-          int diff = v - size - 2*sizeof(int);
+          int diff = v - size - 2 * sizeof(int);
           view(b + size + sizeof(int) * 2) = diff;
           view(e) = diff;
         }
@@ -189,11 +187,12 @@ class Allocator {
     int size = t * sizeof(T);
     while (b < N) {
       int v = view(b);
+      e = b + sizeof(int) + (v < 0 ? -v : v);
+      // std::cout << b << " " << v  << " " << e << std::endl;
       if (b == b1) {
-        assert(v == -size);
+        assert(v <= -size);
         break;
       }
-      e = b + sizeof(int) + (v < 0 ? -v : v);
       b = e + sizeof(int);
     }
     if (b >= N) throw;
