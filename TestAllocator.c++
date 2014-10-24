@@ -164,7 +164,6 @@ TYPED_TEST(SelfTestAllocator, Max_one) {
   for(int i = 0; i < counter; i++) {
     bs[i] = x.allocate(s);
     TestFixture::assert_allocate(x, bs[i], v, s);
-    std::cout << i << " " << bs[i] << std::endl;
   }
 
   try {
@@ -178,10 +177,9 @@ TYPED_TEST(SelfTestAllocator, Max_one) {
   TestFixture::assert_allocate(x, bs[counter - 1], v, s);
 
   for (int i = 0; i < counter; i++) {
-    std::cout << i << " " << bs[i] << std::endl;
     x.deallocate(bs[i], s);
   }
-
+  delete bs;
   ASSERT_TRUE(1);
 }
 
