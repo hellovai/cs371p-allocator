@@ -1,0 +1,96 @@
+commit bbac86a9b705ca00356aa1a6f5e2e1c3e48cb095
+Author: Corin Hill <corin@cs.utexas.edu>
+Date:   Thu Oct 23 20:49:19 2014 -0500
+
+    Doxygen added
+
+commit 15319fc53567ccf30a4272f8b323d7670f926d5f
+Merge: 8204cc1 47053d9
+Author: Vaibhav Gupta <vaibhavtheory@gmail.com>
+Date:   Thu Oct 23 20:40:18 2014 -0500
+
+    Merge branch 'master' of github.com:hellovai/allocator
+
+commit 8204cc130716d1292a74654682cc51fc0c65061b
+Author: Vaibhav Gupta <vaibhavtheory@gmail.com>
+Date:   Thu Oct 23 20:40:10 2014 -0500
+
+    No leaks
+
+commit 4f69a9debf491df3b7b66b11ce82fdd8ce2b5008
+Author: Vaibhav Gupta <vaibhavtheory@gmail.com>
+Date:   Thu Oct 23 20:21:22 2014 -0500
+
+    adding memory fixes
+
+commit 47053d96a21a007d144778bece6810fee00a79bf
+Author: CorinHill <CorinHill@users.noreply.github.com>
+Date:   Thu Oct 23 19:24:02 2014 -0500
+
+    Added method comments.
+
+commit 477966767a5cee1b2d62253d6b797f6474c7e808
+Author: Vaibhav Gupta <vaibhavtheory@gmail.com>
+Date:   Thu Oct 23 19:16:52 2014 -0500
+
+    Adding fixes to test cases
+
+commit 5f15e9760cfaec9eb048e8b3ad498804b570c575
+Author: Vaibhav Gupta <vaibhavtheory@gmail.com>
+Date:   Mon Oct 20 19:16:02 2014 -0500
+
+    Fixes one dealloc. Closes #20
+
+commit 0e4203530f3ae56d65f838c6aa6975bc59c9a98e
+Author: Vaibhav Gupta <vaibhavtheory@gmail.com>
+Date:   Mon Oct 20 19:02:09 2014 -0500
+
+    Test cases and allocate were fixed. Closes #19
+
+commit 4e159782dcde28c1d68487868a3c4b8209c33486
+Author: Vaibhav Gupta <vaibhavtheory@gmail.com>
+Date:   Mon Oct 20 18:49:30 2014 -0500
+
+    Adding dealloc. Closes #15
+
+commit 702fdafa9b7d9fb1556916d45e0df5cc417f90f2
+Author: Vaibhav Gupta <vaibhavtheory@gmail.com>
+Date:   Mon Oct 20 18:08:30 2014 -0500
+
+    Fixes valid. Closes #18
+
+commit 424407a6669f5b838b2ea3e6d823bb429d8629e2
+Author: Vaibhav Gupta <vaibhavtheory@gmail.com>
+Date:   Mon Oct 20 18:06:37 2014 -0500
+
+    Completed allocate. Closes #13
+
+commit 427cbcb1131ee925a1aa392d347c0564dcdd06a0
+Author: Vaibhav Gupta <vaibhavtheory@gmail.com>
+Date:   Mon Oct 20 17:51:17 2014 -0500
+
+    Adding valid and Allocator constructor. Closes #11. Closes #12.
+
+commit 73b3776fe5d451ac3f84110c08bdc0cdafcdd228
+Author: Vaibhav Gupta <vaibhavtheory@gmail.com>
+Date:   Mon Oct 20 17:29:40 2014 -0500
+
+    Max size fix. Fixes #17
+
+commit 2840854207f6616805df7d7a264f19f4bb862907
+Author: Vaibhav Gupta <vaibhavtheory@gmail.com>
+Date:   Mon Oct 20 17:24:21 2014 -0500
+
+    Adding test cases.
+
+commit 508e2d6821f9aa5f4c840ac4f5058bdfda1158b1
+Author: Vaibhav Gupta <vaibhavtheory@gmail.com>
+Date:   Mon Oct 20 16:02:30 2014 -0500
+
+    Format fix
+
+commit cac300003f9a264d08a7253b066792df08cd6c59
+Author: Vaibhav Gupta <vaibhavtheory@gmail.com>
+Date:   Mon Oct 20 15:37:19 2014 -0500
+
+    initial commit
