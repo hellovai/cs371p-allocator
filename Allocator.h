@@ -70,7 +70,8 @@ class Allocator {
   /**
    * O(1) in space
    * O(n) in time
-   * <your documentation>
+   * Iterates over the allocation space to verify correct structure
+   * @return Whether or not the space has a valid structure
    */
   bool valid() const {
     uint b = 0, e;
@@ -90,7 +91,7 @@ class Allocator {
   /**
    * O(1) in space
    * O(1) in time
-   * <your documentation>
+   * Return the data at the specified position in allocation space as an integer reference
    */
   int& view(int i) { return *reinterpret_cast<int*>(&a[i]); }
 
@@ -133,7 +134,9 @@ class Allocator {
    * after allocation there must be enough space left for a valid block
    * the smallest allowable block is sizeof(T) + (2 * sizeof(int))
    * choose the first block that fits
-   * return 0, if allocation fails
+   * throws std::bad_alloc, if allocation fails
+   * @param n the number of bytes requested
+   * @return the position of the newly allocated block
    */
   pointer allocate(size_type n) {
     assert(valid());
@@ -159,7 +162,7 @@ class Allocator {
       b = e + sizeof(int);
     }
     throw std::bad_alloc();
-  }  // replace!
+  }
 
   // ---------
   // construct
@@ -168,7 +171,9 @@ class Allocator {
   /**
    * O(1) in space
    * O(1) in time
-   * <your documentation>
+   * Create a copy of an object at the specified position
+   * @param p position at which construction occurs
+   * @param v the object to be copied
    */
   void construct(pointer p, const_reference v) {
     new (p) T(v);  // this is correct and exempt
@@ -181,9 +186,11 @@ class Allocator {
 
   /**
    * O(1) in space
-   * O(1) in time
-   * after deallocation adjacent free blocks must be coalesced
-   * <your documentation>
+   * O(n) in time
+   * Denotes the specified block as free
+   * Coalesces the specified block with neighbor blocks if they are free
+   * @param pointer the position of the block to deallocate
+   * @param t the size of the target block
    */
   void deallocate(pointer p, size_type t) {
     assert(valid());
@@ -229,7 +236,8 @@ class Allocator {
    * O(1) in space
    * O(1) in time
    * throw an invalid_argument exception, if pointer is invalid
-   * <your documentation>
+   * Deletes the object at the specified location
+   * @param pointer The position of the object to be destructed
    */
   void destroy(pointer p) {
     p->~T();  // this is correct
@@ -241,7 +249,7 @@ class Allocator {
   /**
    * O(1) in space
    * O(1) in time
-   * <your documentation>
+   * Return the data at the specified position in allocation space as a constant integer reference
    */
   const int& view(int i) const { return *reinterpret_cast<const int*>(&a[i]); }
 };
