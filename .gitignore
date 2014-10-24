@@ -10,3 +10,7 @@
 *.gcov
 
 sftp-config.json
+
+Doxyfile
+latex/
+TestAllocator
