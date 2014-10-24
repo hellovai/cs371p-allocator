@@ -149,7 +149,7 @@ TYPED_TEST(TestAllocator, Two_Three) {
   x.deallocate(b2, s);
 }
 
-TYPED_TEST(TestAllocator, Max_one) {
+TYPED_TEST(SelfTestAllocator, Max_one) {
   typedef typename TestFixture::allocator_type allocator_type;
   typedef typename TestFixture::value_type value_type;
   typedef typename TestFixture::difference_type difference_type;
@@ -159,26 +159,40 @@ TYPED_TEST(TestAllocator, Max_one) {
   const difference_type s = 1;
   const value_type v = 1;
   int counter = 100 / (sizeof(value_type) + sizeof(int) * 2);
-  const pointer b1 = x.allocate(s);
-  TestFixture::assert_allocate(x, b1, v, s);
-  while(--counter) {
-    const pointer b = x.allocate(s);
-    TestFixture::assert_allocate(x, b, v, s);
+  pointer* bs = new pointer[counter];
+
+  for(int i = 0; i < counter; i++) {
+    bs[i] = x.allocate(s);
+    TestFixture::assert_allocate(x, bs[i], v, s);
+    std::cout << i << " " << bs[i] << std::endl;
   }
-  x.deallocate(b1, s);
-  const pointer b2 = x.allocate(s);
-  TestFixture::assert_allocate(x, b2, v, s);
+
+  try {
+    x.allocate(s);
+    ASSERT_TRUE(0);
+  } catch (std::bad_alloc e) {
+    x.deallocate(bs[counter - 1], s);
+  }
+
+  bs[counter - 1] = x.allocate(s);
+  TestFixture::assert_allocate(x, bs[counter - 1], v, s);
+
+  for (int i = 0; i < counter; i++) {
+    std::cout << i << " " << bs[i] << std::endl;
+    x.deallocate(bs[i], s);
+  }
+
   ASSERT_TRUE(1);
 }
 
-TYPED_TEST(TestAllocator, Over9000) {
+TYPED_TEST(SelfTestAllocator, Over9000) {
   typedef typename TestFixture::allocator_type allocator_type;
   typedef typename TestFixture::value_type value_type;
   typedef typename TestFixture::difference_type difference_type;
   typedef typename TestFixture::pointer pointer;
 
   allocator_type x;
-  const difference_type s = x.max_size() << 1;
+  const difference_type s = 100 << 1;
   const value_type v = 2;
   try {
     pointer b = x.allocate(s);
@@ -204,6 +218,7 @@ TYPED_TEST(TestAllocator, Construct) {
   TestFixture::assert_allocate(x, b, v, s);
   x.construct(b, v);
   ASSERT_EQ(*b, v);
+  x.destroy(b);
   x.deallocate(b, s);
   ASSERT_TRUE(1);
 }
@@ -222,6 +237,9 @@ TYPED_TEST(TestAllocator, ConstructLoop) {
   for (int i = 0; i < s; i++) {
     x.construct(b + i, v);
     ASSERT_EQ(*(b + i), v);
+  }
+  for (int i = 0; i < s; ++i) {
+    x.destroy(b + i);
   }
   x.deallocate(b, s);
   ASSERT_TRUE(1);
@@ -244,6 +262,7 @@ TYPED_TEST(SelfTestAllocator, Bad_dealloc_1) {
   } catch (...) {
 
   }
+  x.deallocate(b, s);
   ASSERT_TRUE(1);
 }
 
@@ -264,6 +283,7 @@ TYPED_TEST(SelfTestAllocator, Bad_dealloc_2) {
   } catch (...) {
 
   }
+  x.deallocate(b, s);
   ASSERT_TRUE(1);
 }
 
@@ -275,3 +295,13 @@ TEST(Various, Test1) {
   }
 }
 
+
+TEST(Various, Test2) {
+  Allocator<int, 8> x;
+  try {
+    x.allocate(1);
+    ASSERT_TRUE(0);
+  } catch (std::bad_alloc e) {
+    ASSERT_TRUE(1);
+  }
+}

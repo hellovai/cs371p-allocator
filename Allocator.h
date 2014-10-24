@@ -203,11 +203,11 @@ class Allocator {
     }
     if (b >= N) throw std::invalid_argument("Invalid pointer p");
 
-    if (b >= sizeof(int)) {
-      int v = view(b - sizeof(int));
+    if (b1 >= sizeof(int)) {
+      int v = view(b1 - sizeof(int));
       if (v > 0) {
-        b = b - sizeof(int) * 2 - v;
-        size += sizeof(int) * 2 + view(b);
+        b1 = b1 - sizeof(int) * 2 - v;
+        size += sizeof(int) * 2 + view(b1);
       }
     }
     if (e < N - sizeof(int)) {
@@ -217,7 +217,11 @@ class Allocator {
         size += sizeof(int) * 2 + view(e);
       }
     }
-    view(b) = size;
+
+    if (size < -view(b1)) {
+      size = -view(b1);
+    }
+    view(b1) = size;
     view(e) = size;
   }
 
@@ -235,8 +239,6 @@ class Allocator {
     p->~T();  // this is correct
     assert(valid());
   }
-
-  int max_size() { return (sizeof(a) - sizeof(int) * 2) / sizeof(T); }
 
   /**
    * O(1) in space
