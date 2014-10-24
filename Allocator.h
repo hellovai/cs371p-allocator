@@ -108,6 +108,11 @@ class Allocator {
    * sizeof(int))
    */
   Allocator() {
+    if (N < sizeof(int) * 2) {
+      // this does not match std::allocator::allocator as
+      // std::allocator::allocator does not take a byte size
+      throw std::bad_alloc();
+    }
     view(0) = N - sizeof(int) * 2;
     view(N - sizeof(int)) = view(0);
     assert(valid());
@@ -153,7 +158,7 @@ class Allocator {
       }
       b = e + sizeof(int);
     }
-    return 0;
+    throw std::bad_alloc();
   }  // replace!
 
   // ---------
@@ -188,14 +193,15 @@ class Allocator {
     while (b < N) {
       int v = view(b);
       e = b + sizeof(int) + (v < 0 ? -v : v);
-      // std::cout << b << " " << v  << " " << e << std::endl;
       if (b == b1) {
-        assert(v <= -size);
-        break;
+        if (-v >= size) {
+          break;
+        }
+        throw std::invalid_argument("Invalid size_type t");
       }
       b = e + sizeof(int);
     }
-    if (b >= N) throw;
+    if (b >= N) throw std::invalid_argument("Invalid pointer p");
 
     if (b >= sizeof(int)) {
       int v = view(b - sizeof(int));
