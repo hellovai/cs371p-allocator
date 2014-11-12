@@ -1,0 +1,21 @@
+Project 3: Allocator (feedback)
+Github URL: https://github.com/hellovai/cs371p-allocator
+SHA: c3725d92ff79b3b8bfcb320e7d3d8b25d90d00ac
+
+Score breakdown:
+Requirement #1 (5 pts): 5
+Requirement #2 (5 pts): 5
+Requirement #3 (25 pts): 25
+Requirement #4 (25 pts): 23
+Requirement #5 (5 pts): 5
+Requirement #6 (5 pts): 5
+Unit test bonus (10 pts): 10
+Unit test penalty (-10 pts): -8
+Pair programming bonus (5 pts): 5
+Late days (20% penalty per day): 
+Resubmission of missing files (20% penalty): 
+======
+Total: 70
+
+Details (if any): 
+insufficient test cases
